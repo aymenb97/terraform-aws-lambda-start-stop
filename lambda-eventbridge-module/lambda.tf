@@ -70,8 +70,10 @@ resource "aws_lambda_function" "lambda_start_stop" {
   role = aws_iam_role.lambda_exec.arn
   environment {
     variables = {
-      TAG_KEY   = var.tag_key,
-      TAG_VALUE = var.tag_value
+      TAG_KEY               = var.tag_key,
+      TAG_VALUE             = var.tag_value,
+      START_INSTANCES_EVENT = var.start_event_name,
+      STOP_INSTANCES_EVENT  = var.stop_event_name
     }
   }
 }
