@@ -1,15 +1,13 @@
 resource "aws_cloudwatch_event_rule" "waketime" {
-  name        = "instances-wakeup-event"
-  description = "Start all stopped instances on Schedule"
-  #schedule_expression = "cron(${var.waketime})"
-  schedule_expression = "rate(5 minutes)"
-
-
+  name                = "instances-wakeup-event"
+  description         = "Start all stopped instances on Schedule"
+  schedule_expression = "cron(${var.waketime})"
 }
 
 resource "aws_cloudwatch_event_rule" "bedtime" {
-  name                = "instances-bedtime-event"
-  description         = "Stop all started instances on Schedule"
+  name        = "instances-bedtime-event"
+  description = "Stop all started instances on Schedule"
+  #schedule_expression = "rate(2 minutes)"
   schedule_expression = "cron(${var.bedtime})"
 
 }

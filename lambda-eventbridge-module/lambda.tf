@@ -29,6 +29,7 @@ data "archive_file" "lambda_rest_api" {
   source_dir  = "${path.module}/../lambda-function-start-stop"
   output_path = "${path.module}/../lambda-function-start-stop.zip"
 }
+data "aws_region" "current" {}
 resource "aws_s3_object" "lambda_rest_api" {
   bucket = aws_s3_bucket.lambda_bucket.id
   key    = "lambda-start-stop.zip"
@@ -74,6 +75,7 @@ resource "aws_lambda_function" "lambda_start_stop" {
       TAG_VALUE             = var.tag_value,
       START_INSTANCES_EVENT = var.start_event_name,
       STOP_INSTANCES_EVENT  = var.stop_event_name
+      REGION                = data.aws_region.current.name
     }
   }
 }

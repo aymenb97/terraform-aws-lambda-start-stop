@@ -15,7 +15,6 @@ variable "tag_key" {
 variable "start_event_name" {
   description = "Name of the Start event detail in Event Bridge"
   default     = "start-event"
-
 }
 variable "stop_event_name" {
   description = "Name of the Stop event detail in Event Bridge"
