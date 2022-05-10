@@ -7,6 +7,7 @@ STOP_INSTANCES_EVENT = os.environ['STOP_INSTANCES_EVENT'] if "STOP_INSTANCES_EVE
 REGION = os.environ["REGION"]
 TAG_KEY = os.environ["TAG_KEY"]
 TAG_VALUE = os.environ["TAG_VALUE"]
+TOPIC_ARN = os.environ["TOPIC_ARN"]
 
 
 def handler(event, context):
@@ -16,6 +17,7 @@ def handler(event, context):
 
 def start_stop_instances(eventType, tagKey, tagValue):
     ec2client = boto3.client('ec2', region_name=REGION)
+    sns = boto3.client('sns', region_name=REGION)
     instancelist = []
     if(eventType == START_INSTANCES_EVENT):
         instances = ec2client.describe_instances(
@@ -35,6 +37,13 @@ def start_stop_instances(eventType, tagKey, tagValue):
                 instancelist.append(instance["InstanceId"])
         if(len(instancelist) > 0):
             print("Started Instances with IDs", instancelist)
+            sns.publish(
+                TopicArn='arn:aws:sns:us-east-1:974195321489:scheduled-start-stop-topic',
+                Message="Your Scheduled Event Started {instanceCount} EC2 Instances".format(
+                    instanceCount=len(instancelist)),
+                Subject="[Scheduled Start Stop] Started instances"
+            )
+
             ec2client.start_instances(InstanceIds=instancelist)
         else:
             print("No instances to stop")
@@ -57,5 +66,11 @@ def start_stop_instances(eventType, tagKey, tagValue):
         if(len(instancelist) > 0):
             print("Stopped Instances with IDs", instancelist)
             ec2client.stop_instances(InstanceIds=instancelist)
+            sns.publish(
+                TopicArn='arn:aws:sns:us-east-1:974195321489:scheduled-start-stop-topic',
+                Message="Your Scheduled Event Stopped {instanceCount} EC2 Instances".format(
+                    instanceCount=len(instancelist)),
+                Subject="[Scheduled Start Stop] Stopped instances"
+            )
         else:
             print("No instances to start")

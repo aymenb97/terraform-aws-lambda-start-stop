@@ -20,3 +20,6 @@ variable "stop_event_name" {
   description = "Name of the Stop event detail in Event Bridge"
   default     = "stop-event"
 }
+variable "emails" {
+  description = "The Email Addresses of the subscribers"
+}
