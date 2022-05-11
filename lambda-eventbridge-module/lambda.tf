@@ -59,6 +59,11 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_ec2_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchActionsEC2Access"
 }
+resource "aws_iam_role_policy_attachment" "sns_full_access" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+
+}
 resource "aws_lambda_function" "lambda_start_stop" {
   function_name = "schedule-start-stop"
   s3_bucket     = aws_s3_bucket.lambda_bucket.id
@@ -76,6 +81,7 @@ resource "aws_lambda_function" "lambda_start_stop" {
       START_INSTANCES_EVENT = var.start_event_name,
       STOP_INSTANCES_EVENT  = var.stop_event_name
       REGION                = data.aws_region.current.name
+      TOPIC_ARN             = aws_sns_topic.start_stop_topic.arn
     }
   }
 }

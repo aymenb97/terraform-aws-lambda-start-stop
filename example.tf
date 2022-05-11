@@ -4,7 +4,7 @@ variable "emails" {
 
 module "lambda-eventbridge" {
   source   = "./lambda-eventbridge-module"
-  waketime = "0 8 * * ? *"
-  bedtime  = "0 10 * * ? *"
+  waketime = "55 15 * * ? *"
+  bedtime  = "59 15 * * ? *"
   emails   = toset(var.emails)
 }
