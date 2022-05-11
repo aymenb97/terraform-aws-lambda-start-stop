@@ -4,7 +4,11 @@ Terraform module to create a lambda function to start/Stop EC2 instances with a 
 - Creates two AWS Eventbridge resources.
 - Attaches the resources to the default EventBridge Bus.
 - Lambda function is stored in an S3 Bucket.
-- Creates a Lambda function that start/stops tagged instances based on the EventBridge Resource.
+- Creates a Lambda function that starts/stops tagged instances based on the EventBridge Event.
+- Publishes Events to an SNS Topic.
+## Architecture
+
+![Architecture](./docs/sns_lambda_event_bridge.drawio.png)
 
 ## Usage
 Specify the cron expression for the `waketime` and `bedtime` variables.
@@ -12,9 +16,14 @@ An example is provided in the `example.tf` file.
 
 ```shell
 $terraform init
+```
+```shell
 $terraform plan
+```
+```shell
 $terraform apply
 ```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
