@@ -55,9 +55,14 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
-resource "aws_iam_role_policy_attachment" "cloudwatch_ec2_policy" {
+resource "aws_iam_role_policy_attachment" "cloud_watch_full_access" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchActionsEC2Access"
+}
+resource "aws_iam_role_policy_attachment" "ec2_full_access" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+
 }
 resource "aws_iam_role_policy_attachment" "sns_full_access" {
   role       = aws_iam_role.lambda_exec.name
